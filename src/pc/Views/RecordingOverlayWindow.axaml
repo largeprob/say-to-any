@@ -1,0 +1,245 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:pc.ViewModels"
+        x:Class="pc.Views.RecordingOverlayWindow"
+        x:DataType="vm:MainWindowViewModel"
+        SizeToContent="WidthAndHeight"
+        CanResize="False"
+        ShowActivated="False"
+        ShowInTaskbar="False"
+        WindowDecorations="None"
+        Topmost="True"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent">
+
+    <Window.Styles>
+        <Style Selector="Button.overlay-circle">
+            <Setter Property="Width" Value="26"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CornerRadius" Value="13"/>
+            <Setter Property="Background" Value="#1F2937"/>
+            <Setter Property="BorderBrush" Value="#374151"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.overlay-circle:pointerover">
+            <Setter Property="Background" Value="#374151"/>
+            <Setter Property="BorderBrush" Value="#4B5563"/>
+        </Style>
+
+        <Style Selector="Button.overlay-circle:pointerover /template/ Border#RootBorder">
+            <Setter Property="Background" Value="#374151"/>
+            <Setter Property="BorderBrush" Value="#4B5563"/>
+        </Style>
+
+        <Style Selector="Button.overlay-done">
+            <Setter Property="MinWidth" Value="46"/>
+            <Setter Property="Height" Value="26"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="CornerRadius" Value="13"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF"/>
+            <Setter Property="Foreground" Value="#111827"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.overlay-done:pointerover">
+            <Setter Property="Background" Value="#EAF3FF"/>
+            <Setter Property="BorderBrush" Value="#EAF3FF"/>
+            <Setter Property="Foreground" Value="#126DFF"/>
+        </Style>
+
+        <Style Selector="Button.overlay-done:pointerover /template/ Border#RootBorder">
+            <Setter Property="Background" Value="#EAF3FF"/>
+            <Setter Property="BorderBrush" Value="#EAF3FF"/>
+        </Style>
+
+        <Style Selector="Border.wave-bar">
+            <Setter Property="Width" Value="3"/>
+            <Setter Property="MinHeight" Value="5"/>
+            <Setter Property="MaxHeight" Value="22"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="CornerRadius" Value="1.5"/>
+            <Setter Property="Opacity" Value="0.96"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Height" Duration="0:0:0.10"/>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Border.processing-track">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="ClipToBounds" Value="True"/>
+        </Style>
+
+        <Style Selector="Border.processing-fill">
+            <Setter Property="Background" Value="#42FFFFFF"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="RenderTransformOrigin" Value="0,0.5"/>
+        </Style>
+
+        <Style Selector="TextBlock.processing-label">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#F8FBFF"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Opacity" Value="0.92"/>
+        </Style>
+
+        <Style Selector="Border.result-panel">
+            <Setter Property="Width" Value="340"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="Background" Value="#E6000000"/>
+            <Setter Property="BoxShadow" Value="0 4 16 0 #66000000"/>
+        </Style>
+
+        <Style Selector="Button.result-copy">
+            <Setter Property="MinWidth" Value="86"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="18,0"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Background" Value="#126DFF"/>
+            <Setter Property="BorderBrush" Value="#126DFF"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.result-copy:pointerover">
+            <Setter Property="Background" Value="#0F3F89"/>
+            <Setter Property="BorderBrush" Value="#0F3F89"/>
+        </Style>
+
+        <Style Selector="Button.result-copy:pointerover /template/ Border#RootBorder">
+            <Setter Property="Background" Value="#0F3F89"/>
+            <Setter Property="BorderBrush" Value="#0F3F89"/>
+        </Style>
+
+        <Style Selector="Button.result-close">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="Button.result-close:pointerover">
+            <Setter Property="Background" Value="#22FFFFFF"/>
+        </Style>
+    </Window.Styles>
+
+    <StackPanel Spacing="8">
+        <Border Classes="result-panel"
+                IsVisible="{Binding IsDictationResultVisible}">
+            <Grid ColumnDefinitions="*,Auto">
+                <ScrollViewer MaxHeight="118"
+                              VerticalScrollBarVisibility="Auto"
+                              Margin="0,0,8,0">
+                    <TextBlock Text="{Binding DictationResultText}"
+                               Foreground="#FFFFFF"
+                               FontSize="13"
+                               LineHeight="19"
+                               TextWrapping="Wrap"/>
+                </ScrollViewer>
+
+                <Button Grid.Column="1"
+                        Classes="result-close"
+                        Content="×"
+                        Command="{Binding DismissDictationResultCommand}"
+                        VerticalAlignment="Top"
+                        Margin="0,-4,-4,0"
+                        ToolTip.Tip="关闭"/>
+            </Grid>
+        </Border>
+
+        <Button Classes="result-copy"
+                Content="复制"
+                Command="{Binding CopyDictationResultCommand}"
+                HorizontalAlignment="Center"
+                IsVisible="{Binding IsDictationResultVisible}"/>
+
+        <Grid Width="220"
+              Height="48"
+              HorizontalAlignment="Center"
+              IsVisible="{Binding IsDictationControlVisible}">
+            <Border Margin="5"
+                    CornerRadius="18"
+                    Background="#E6000000"
+                    ClipToBounds="True"
+                    BoxShadow="0 4 16 0 #66000000">
+                <Grid>
+                    <Border Classes="processing-track"
+                            IsVisible="{Binding IsDictationProcessing}">
+                        <Border Classes="processing-fill">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="{Binding DictationProcessingProgressScale}"/>
+                            </Border.RenderTransform>
+                        </Border>
+                    </Border>
+
+                    <TextBlock Classes="processing-label"
+                               Text="think"
+                               IsVisible="{Binding IsDictationProcessing}"/>
+
+                    <Border Padding="6,4"
+                            IsVisible="{Binding IsRecording}">
+                        <Grid ColumnDefinitions="Auto,*,Auto"
+                              ColumnSpacing="8"
+                              VerticalAlignment="Center">
+                            <Button Classes="overlay-circle"
+                                    Content="×"
+                                    Command="{Binding CancelDictationCommand}"
+                                    ToolTip.Tip="取消"/>
+
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Spacing="3">
+                                <Border Classes="wave-bar" Height="{Binding WaveBar2Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar4Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar1Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar5Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar3Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar5Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar1Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar4Height}"/>
+                                <Border Classes="wave-bar" Height="{Binding WaveBar2Height}"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="2"
+                                    Classes="overlay-done"
+                                    Content="完成"
+                                    Command="{Binding FinishDictationCommand}"
+                                    ToolTip.Tip="完成"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </StackPanel>
+</Window>

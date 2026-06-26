@@ -1,0 +1,4 @@
+interface:
+  display_name: "SukiUI Avalonia"
+  short_description: "Build SukiUI desktop UI in this repo"
+  default_prompt: "Use $sukiui-avalonia to implement the requested SukiUI/Avalonia desktop UI change in src/pc."

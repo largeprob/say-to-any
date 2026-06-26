@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:pc.ViewModels"
+        x:Class="pc.Views.PromptOverlayWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Width="220"
+        Height="72"
+        CanResize="False"
+        ShowActivated="False"
+        ShowInTaskbar="False"
+        WindowDecorations="None"
+        Topmost="True"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent">
+
+    <Border Margin="10"
+            Padding="18,12"
+            CornerRadius="24"
+            Background="#E6000000"
+            BoxShadow="0 8 28 0 #66000000">
+        <TextBlock Text="{Binding PromptMessage}"
+                   Foreground="#FFFFFF"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+    </Border>
+</Window>

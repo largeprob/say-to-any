@@ -1,0 +1,161 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:pc.ViewModels"
+             x:Class="pc.Views.MicrophoneDialogView"
+             x:DataType="vm:MicrophoneDialogViewModel"
+             Width="520"
+             MaxHeight="540">
+
+    <Border Background="#FFFFFF"
+            BorderBrush="#DCE8F8"
+            BorderThickness="1"
+            CornerRadius="16"
+            Padding="20">
+        <Grid RowDefinitions="Auto,Auto,*">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="麦克风"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           Foreground="#102A56"
+                           VerticalAlignment="Center"/>
+                <Button Grid.Column="1"
+                        Command="{Binding CloseCommand}"
+                        Width="32"
+                        Height="32"
+                        Padding="0"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+                    <TextBlock Text="×"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#526681"/>
+                </Button>
+            </Grid>
+
+            <TextBlock Grid.Row="1"
+                       Text="选择能捕捉到您声音的麦克风。如果指示条没有移动，请尝试其他麦克风。"
+                       TextWrapping="Wrap"
+                       Foreground="#6E7D99"
+                       Margin="0,8,0,16"/>
+
+            <ScrollViewer Grid.Row="2"
+                          MaxHeight="360"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Options}"
+                              Width="470"
+                              HorizontalAlignment="Center">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:MicrophoneOptionViewModel">
+                            <Button Command="{Binding SelectCommand}"
+                                    Width="470"
+                                    MinWidth="470"
+                                    MaxWidth="470"
+                                    Padding="0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    HorizontalContentAlignment="Stretch"
+                                    Margin="0,0,0,8">
+                                <Border Background="{Binding RowBackground}"
+                                        BorderBrush="{Binding RowBorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="10"
+                                        Width="470"
+                                        MinWidth="470"
+                                        MaxWidth="470"
+                                        HorizontalAlignment="Stretch"
+                                        ClipToBounds="True"
+                                        Padding="12">
+                                    <Grid ColumnDefinitions="Auto,*,74"
+                                          ColumnSpacing="12">
+                                        <Border Width="20"
+                                                Height="20"
+                                                CornerRadius="10"
+                                                Background="{Binding SelectionBackground}"
+                                                BorderBrush="{Binding SelectionBorderBrush}"
+                                                BorderThickness="1"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding SelectionMark}"
+                                                       Foreground="#FFFFFF"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1"
+                                                    Spacing="3"
+                                                    ClipToBounds="True">
+                                            <TextBlock Text="{Binding Title}"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="{Binding TitleForeground}"
+                                                       TextWrapping="NoWrap"
+                                                       ToolTip.Tip="{Binding Title}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding Description}"
+                                                       FontSize="12"
+                                                       Foreground="#6E7D99"
+                                                       TextWrapping="Wrap"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2"
+                                                    Orientation="Horizontal"
+                                                    Spacing="4"
+                                                    Height="32"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center">
+                                            <Border Width="6"
+                                                    Height="14"
+                                                    Background="{Binding Bar1Brush}"
+                                                    BorderBrush="#DCEBFF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="3"
+                                                    VerticalAlignment="Center"/>
+                                            <Border Width="6"
+                                                    Height="20"
+                                                    Background="{Binding Bar2Brush}"
+                                                    BorderBrush="#DCEBFF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="3"
+                                                    VerticalAlignment="Center"/>
+                                            <Border Width="6"
+                                                    Height="28"
+                                                    Background="{Binding Bar3Brush}"
+                                                    BorderBrush="#DCEBFF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="3"
+                                                    VerticalAlignment="Center"/>
+                                            <Border Width="6"
+                                                    Height="22"
+                                                    Background="{Binding Bar4Brush}"
+                                                    BorderBrush="#DCEBFF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="3"
+                                                    VerticalAlignment="Center"/>
+                                            <Border Width="6"
+                                                    Height="30"
+                                                    Background="{Binding Bar5Brush}"
+                                                    BorderBrush="#DCEBFF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="3"
+                                                    VerticalAlignment="Center"/>
+                                            <Border Width="6"
+                                                    Height="16"
+                                                    Background="{Binding Bar6Brush}"
+                                                    BorderBrush="#DCEBFF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="3"
+                                                    VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

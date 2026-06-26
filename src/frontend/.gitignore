@@ -1,0 +1,13 @@
+.DS_Store
+.env
+.env.production
+/node_modules/
+
+# Local HTTPS certificates
+/certs/*.pem
+/certs/*.key
+rootCA-key.pem
+
+# React Router
+/.react-router/
+/build/

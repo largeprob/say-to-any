@@ -1,0 +1,474 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:pc.ViewModels"
+             xmlns:models="using:pc.Models"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="860"
+             d:DesignHeight="640"
+             Width="860"
+             Height="640"
+             MinWidth="760"
+             MinHeight="560"
+             x:Class="pc.Views.PreferencesDialogView"
+             x:DataType="vm:PreferencesDialogViewModel"
+             Background="Transparent">
+
+    <UserControl.Styles>
+        <Style Selector="Button.preferences-nav-button:pointerover">
+            <Setter Property="Background" Value="#EAF3FF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+
+        <Style Selector="Button.preferences-nav-button:pointerover /template/ Border#RootBorder">
+            <Setter Property="Background" Value="#EAF3FF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Background="#F8FBFF"
+            BorderBrush="#DCE8F8"
+            BorderThickness="1"
+            CornerRadius="16"
+            ClipToBounds="True"
+            Margin="12">
+        <Grid RowDefinitions="48,*">
+            <Grid Background="#F8FBFF">
+                <Button Command="{Binding CloseDialogCommand}"
+                        Width="34"
+                        Height="34"
+                        Padding="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Margin="0,0,14,0"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        ToolTip.Tip="关闭">
+                    <TextBlock Text="×"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="#526681"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               TextAlignment="Center"/>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1" ColumnDefinitions="188,*">
+            <Border Background="#F8FBFF"
+                    BorderThickness="0"
+                    CornerRadius="0,0,0,16">
+                <Grid Margin="14,10,14,14">
+                    <StackPanel Spacing="6">
+                        <Grid Height="38">
+                            <Border Background="#EAF3FF"
+                                    CornerRadius="12"
+                                    IsVisible="{Binding IsAccountVisible}"/>
+                            <Button Classes="Flat Rounded preferences-nav-button"
+                                    Command="{Binding ShowAccountCommand}"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Foreground="{Binding AccountNavigationForeground}">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Viewbox Width="16" Height="16" Stretch="Uniform">
+                                        <Canvas Width="1024" Height="1024">
+                                            <Path Data="{StaticResource AccountIconGeometry}"
+                                                  Fill="{Binding AccountNavigationForeground}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="账户"
+                                               VerticalAlignment="Center"
+                                               Foreground="{Binding AccountNavigationForeground}"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid Height="38">
+                            <Border Background="#EAF3FF"
+                                    CornerRadius="12"
+                                    IsVisible="{Binding IsSettingsVisible}"/>
+                            <Button Classes="Flat Rounded preferences-nav-button"
+                                    Command="{Binding ShowSettingsCommand}"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Foreground="{Binding SettingsNavigationForeground}">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Viewbox Width="16" Height="16" Stretch="Uniform">
+                                        <Canvas Width="1024" Height="1024">
+                                            <Path Data="{StaticResource SettingsIconGeometry}"
+                                                  Fill="{Binding SettingsNavigationForeground}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="设置"
+                                               VerticalAlignment="Center"
+                                               Foreground="{Binding SettingsNavigationForeground}"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <Grid Height="38">
+                            <Border Background="#EAF3FF"
+                                    CornerRadius="12"
+                                    IsVisible="{Binding IsAboutVisible}"/>
+                            <Button Classes="Flat Rounded preferences-nav-button"
+                                    Command="{Binding ShowAboutCommand}"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Foreground="{Binding AboutNavigationForeground}">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <Viewbox Width="16" Height="16" Stretch="Uniform">
+                                        <Canvas Width="1024" Height="1024">
+                                            <Path Data="{StaticResource AboutIconGeometry}"
+                                                  Fill="{Binding AboutNavigationForeground}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="关于"
+                                               VerticalAlignment="Center"
+                                               Foreground="{Binding AboutNavigationForeground}"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1"
+                    Background="#FFFFFF"
+                    BorderThickness="0"
+                    CornerRadius="18,18,0,0"
+                    ClipToBounds="True">
+            <Grid Margin="26,24,26,22">
+                <Grid IsVisible="{Binding IsAccountVisible}"/>
+
+                <Grid IsVisible="{Binding IsSettingsVisible}"
+                      RowDefinitions="Auto,*">
+                    <Grid ColumnDefinitions="*,Auto"
+                          Margin="0,0,0,18">
+                        <StackPanel>
+                            <TextBlock Text="设置"
+                                       FontSize="24"
+                                       FontWeight="SemiBold"
+                                       Foreground="#102A56"/>
+                            <TextBlock Text="模型、快捷键、麦克风和界面语言。"
+                                       Margin="0,6,0,0"
+                                       Foreground="#6E7D99"/>
+                        </StackPanel>
+
+                        <Button Grid.Column="1"
+                                Content="保存设置"
+                                Command="{Binding Main.SaveSettingsCommand}"
+                                Width="104"
+                                Height="36"
+                                Background="#126DFF"
+                                Foreground="#FFFFFF"
+                                BorderThickness="0"/>
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="1"
+                                  VerticalScrollBarVisibility="Auto">
+                        <StackPanel Spacing="14">
+                            <Border BorderBrush="#E5EEFA"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="16"
+                                    Background="#FFFFFF">
+                                <StackPanel Spacing="14">
+                                    <TextBlock Text="模型配置"
+                                               FontWeight="SemiBold"
+                                               Foreground="#102A56"/>
+
+                                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                                          ColumnDefinitions="140,*">
+                                        <TextBlock Grid.ColumnSpan="2"
+                                                   Text="LLM Model"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#102A56"/>
+                                        <TextBlock Grid.Row="1"
+                                                   Text="Base URL"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <TextBox Grid.Row="1"
+                                                 Grid.Column="1"
+                                                 Text="{Binding Main.Settings.LmBaseUrl, Mode=TwoWay}"
+                                                 Margin="0,12,0,0"/>
+                                        <TextBlock Grid.Row="2"
+                                                   Text="API Key"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <TextBox Grid.Row="2"
+                                                 Grid.Column="1"
+                                                 Text="{Binding Main.Settings.LmApiKey, Mode=TwoWay}"
+                                                 Margin="0,12,0,0"/>
+                                        <TextBlock Grid.Row="3"
+                                                   Text="Model"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <TextBox Grid.Row="3"
+                                                 Grid.Column="1"
+                                                 Text="{Binding Main.Settings.LmModel, Mode=TwoWay}"
+                                                 Margin="0,12,0,0"/>
+                                        <TextBlock Grid.Row="4"
+                                                   Text="温度"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <Grid Grid.Row="4"
+                                              Grid.Column="1"
+                                              ColumnDefinitions="*,Auto"
+                                              Margin="0,12,0,0">
+                                            <Slider Minimum="0"
+                                                    Maximum="2"
+                                                    SmallChange="0.1"
+                                                    LargeChange="0.5"
+                                                    Value="{Binding Main.Settings.LmTemperature, Mode=TwoWay}"/>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Main.Settings.LmTemperature, StringFormat={}{0:0.0}}"
+                                                       Foreground="#526681"
+                                                       VerticalAlignment="Center"
+                                                       Margin="12,0,0,0"/>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Border Height="1" Background="#E5EEFA"/>
+
+                                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                                          ColumnDefinitions="140,*">
+                                        <TextBlock Grid.ColumnSpan="2"
+                                                   Text="ASR Model"
+                                                   FontWeight="SemiBold"
+                                                   Foreground="#102A56"/>
+                                        <TextBlock Grid.Row="1"
+                                                   Text="Base URL"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <TextBox Grid.Row="1"
+                                                 Grid.Column="1"
+                                                 Text="{Binding Main.Settings.AsrBaseUrl, Mode=TwoWay}"
+                                                 Margin="0,12,0,0"/>
+                                        <TextBlock Grid.Row="2"
+                                                   Text="API Key"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <TextBox Grid.Row="2"
+                                                 Grid.Column="1"
+                                                 Text="{Binding Main.Settings.AsrApiKey, Mode=TwoWay}"
+                                                 Margin="0,12,0,0"/>
+                                        <TextBlock Grid.Row="3"
+                                                   Text="Model"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <TextBox Grid.Row="3"
+                                                 Grid.Column="1"
+                                                 Text="{Binding Main.Settings.AsrModel, Mode=TwoWay}"
+                                                 Margin="0,12,0,0"/>
+                                        <TextBlock Grid.Row="4"
+                                                   Text="识别语言"
+                                                   Margin="0,12,0,0"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <StackPanel Grid.Row="4"
+                                                    Grid.Column="1"
+                                                    Spacing="8"
+                                                    Margin="0,12,0,0">
+                                            <TextBox Text="{Binding Main.Settings.Language, Mode=TwoWay}"/>
+                                            <CheckBox Content="ASR enable_itn"
+                                                      IsChecked="{Binding Main.Settings.AsrEnableItn, Mode=TwoWay}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                                          ColumnDefinitions="140,*">
+                                        <TextBlock Grid.Row="0"
+                                                   Text="超时秒数"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#526681"/>
+                                        <TextBox Grid.Row="0"
+                                                 Grid.Column="1"
+                                                 Text="{Binding Main.Settings.TimeoutSeconds, Mode=TwoWay}"/>
+                                        <CheckBox Grid.Row="1"
+                                                  Grid.Column="1"
+                                                  Content="启用文本整理"
+                                                  IsChecked="{Binding Main.Settings.EnableTextCleanup, Mode=TwoWay}"
+                                                  Margin="0,12,0,0"/>
+                                        <CheckBox Grid.Row="2"
+                                                  Grid.Column="1"
+                                                  Content="识别后自动粘贴"
+                                                  IsChecked="{Binding Main.Settings.AutoPasteAfterDictation, Mode=TwoWay}"
+                                                  Margin="0,8,0,0"/>
+                                        <Button Grid.Row="3"
+                                                Grid.Column="1"
+                                                Content="测试连接"
+                                                Command="{Binding Main.TestConnectionCommand}"
+                                                Width="94"
+                                                Height="34"
+                                                HorizontalAlignment="Left"
+                                                Margin="0,14,0,0"/>
+                                        <TextBlock Grid.Row="4"
+                                                   Grid.Column="1"
+                                                   Text="{Binding Main.StatusMessage}"
+                                                   TextWrapping="Wrap"
+                                                   Foreground="#6E7D99"
+                                                   Margin="0,10,0,0"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <Border BorderBrush="#E5EEFA"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="16"
+                                    Background="#FFFFFF">
+                                <Grid RowDefinitions="Auto,Auto"
+                                      ColumnDefinitions="140,*">
+                                    <TextBlock Grid.ColumnSpan="2"
+                                               Text="录音快捷键"
+                                               FontWeight="SemiBold"
+                                               Foreground="#102A56"
+                                               Margin="0,0,0,14"/>
+                                    <TextBlock Grid.Row="1"
+                                               Text="启动录音"
+                                               VerticalAlignment="Center"
+                                               Foreground="#526681"/>
+                                    <TextBox Grid.Row="1"
+                                             Grid.Column="1"
+                                             Text="{Binding RecordingHotkeyText}"
+                                             IsReadOnly="True"/>
+                                </Grid>
+                            </Border>
+
+                            <Border BorderBrush="#E5EEFA"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="16"
+                                    Background="#FFFFFF">
+                                <Grid RowDefinitions="Auto,Auto"
+                                      ColumnDefinitions="140,*">
+                                    <TextBlock Grid.ColumnSpan="2"
+                                               Text="翻译快捷键"
+                                               FontWeight="SemiBold"
+                                               Foreground="#102A56"
+                                               Margin="0,0,0,14"/>
+                                    <TextBlock Grid.Row="1"
+                                               Text="翻译文本"
+                                               VerticalAlignment="Center"
+                                               Foreground="#526681"/>
+                                    <TextBox Grid.Row="1"
+                                             Grid.Column="1"
+                                             Text="{Binding TranslationHotkeyText}"
+                                             IsReadOnly="True"/>
+                                </Grid>
+                            </Border>
+
+                            <Border BorderBrush="#E5EEFA"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="16"
+                                    Background="#FFFFFF">
+                                <Grid RowDefinitions="Auto,Auto"
+                                      ColumnDefinitions="140,*,Auto">
+                                    <TextBlock Grid.ColumnSpan="3"
+                                               Text="麦克风设备"
+                                               FontWeight="SemiBold"
+                                               Foreground="#102A56"
+                                               Margin="0,0,0,14"/>
+                                    <TextBlock Grid.Row="1"
+                                               Text="输入设备"
+                                               VerticalAlignment="Center"
+                                               Foreground="#526681"/>
+                                    <Grid Grid.Row="1"
+                                          Grid.Column="1">
+                                        <Button Command="{Binding Main.ShowMicrophoneDialogCommand}"
+                                                Height="34"
+                                                HorizontalContentAlignment="Stretch"
+                                                Background="#F7FAFF"
+                                                BorderBrush="#DCEBFF"
+                                                BorderThickness="1"
+                                                Padding="11,0,40,0">
+                                            <TextBlock Text="{Binding Main.SelectedMicrophoneDisplayName}"
+                                                       Foreground="#102A56"
+                                                       ToolTip.Tip="{Binding Main.SelectedMicrophoneDisplayName}"
+                                                       VerticalAlignment="Center"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </Button>
+                                        <Viewbox Width="18"
+                                                 Height="18"
+                                                 Stretch="Uniform"
+                                                 HorizontalAlignment="Right"
+                                                 VerticalAlignment="Center"
+                                                 IsHitTestVisible="False"
+                                                 Margin="0,0,11,0">
+                                            <Canvas Width="1024"
+                                                    Height="1024">
+                                                <Path Data="{StaticResource InputDeviceMenuIconGeometry}"
+                                                      Fill="#66A6EF"/>
+                                            </Canvas>
+                                        </Viewbox>
+                                    </Grid>
+                                    <Button Grid.Row="1"
+                                            Grid.Column="2"
+                                            Content="刷新"
+                                            Command="{Binding Main.RefreshMicrophonesCommand}"
+                                            Width="72"
+                                            Height="34"
+                                            Margin="10,0,0,0"/>
+                                </Grid>
+                            </Border>
+
+                            <Border BorderBrush="#E5EEFA"
+                                    BorderThickness="1"
+                                    CornerRadius="12"
+                                    Padding="16"
+                                    Background="#FFFFFF">
+                                <Grid RowDefinitions="Auto,Auto"
+                                      ColumnDefinitions="140,*">
+                                    <TextBlock Grid.ColumnSpan="2"
+                                               Text="程序页面语言"
+                                               FontWeight="SemiBold"
+                                               Foreground="#102A56"
+                                               Margin="0,0,0,14"/>
+                                    <TextBlock Grid.Row="1"
+                                               Text="界面语言"
+                                               VerticalAlignment="Center"
+                                               Foreground="#526681"/>
+                                    <ComboBox Grid.Row="1"
+                                              Grid.Column="1"
+                                              ItemsSource="{Binding AppLanguages}"
+                                              SelectedItem="{Binding Main.Settings.AppLanguage, Mode=TwoWay}"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+
+                <Grid IsVisible="{Binding IsAboutVisible}"
+                      RowDefinitions="Auto,Auto,*">
+                    <TextBlock Text="关于"
+                               FontSize="24"
+                               FontWeight="SemiBold"
+                               Foreground="#102A56"/>
+                    <TextBlock Grid.Row="1"
+                               Text="Say To Any"
+                               Margin="0,10,0,0"
+                               Foreground="#526681"/>
+                </Grid>
+            </Grid>
+            </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</UserControl>
