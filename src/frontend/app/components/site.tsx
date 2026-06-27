@@ -13,12 +13,26 @@ export function SiteHeader() {
           <a href="/about" className="transition hover:text-[#535761]">关于我们</a>
         </nav>
 
-        <a
-          href="/pricing#download"
-          className="inline-flex h-11 shrink-0 items-center rounded-[13px] bg-[#06080d] px-4 text-[15px] font-semibold text-white shadow-[0_14px_34px_rgba(6,8,13,0.16)] transition hover:-translate-y-0.5 md:px-5"
-        >
-          下载<span className="hidden md:inline">&nbsp;Say-To-Any</span>
-        </a>
+        <div className="flex shrink-0 items-center gap-4">
+          <a
+            href="/pricing#download"
+            className="inline-flex h-11 items-center rounded-[13px] bg-[#06080d] px-4 text-[15px] font-semibold text-white shadow-[0_14px_34px_rgba(6,8,13,0.16)] transition hover:-translate-y-0.5 md:px-5"
+          >
+            下载<span className="hidden md:inline">&nbsp;Say-To-Any</span>
+          </a>
+          <a
+            href="/"
+            className="hidden h-11 w-[58px] items-center justify-center transition hover:-translate-y-0.5 md:flex"
+            aria-label="Say-To-Any logo"
+          >
+            <img
+              src="/say-to-any-logo.png"
+              alt=""
+              className="h-9 w-auto object-contain"
+              decoding="async"
+            />
+          </a>
+        </div>
       </div>
     </header>
   );
