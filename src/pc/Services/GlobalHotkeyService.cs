@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace pc.Services;
 
-public sealed class GlobalHotkeyService : IDisposable
+public sealed class WindowsGlobalHotkeyService : IGlobalHotkeyService
 {
     private const int LowLevelKeyboardHook = 13;
     private const int KeyDown = 0x0100;
@@ -25,7 +25,7 @@ public sealed class GlobalHotkeyService : IDisposable
     private bool forwardedAltDown;
     private int activeAltKeyCode = VirtualKeyAlt;
 
-    public GlobalHotkeyService()
+    public WindowsGlobalHotkeyService()
     {
         hookProc = HookCallback;
     }

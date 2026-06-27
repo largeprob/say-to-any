@@ -15,7 +15,7 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $projectPath = Join-Path $repoRoot "src\pc\pc.csproj"
 $publishDir = Join-Path $repoRoot "artifacts\publish\pc\$Runtime"
 $releaseDir = Join-Path $repoRoot "artifacts\releases\pc\$Runtime"
-$iconPath = Join-Path $repoRoot "src\pc\Assets\avalonia-logo.ico"
+$iconPath = Join-Path $repoRoot "src\pc\Assets\logo.ico"
 
 if ([string]::IsNullOrWhiteSpace($Version)) {
     $Version = (& dotnet msbuild $projectPath -getProperty:Version).Trim()

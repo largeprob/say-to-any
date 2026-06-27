@@ -3,7 +3,7 @@ using pc.Models;
 
 namespace pc.Services;
 
-public sealed class MicrophoneLevelMonitor : IDisposable
+public sealed class WindowsMicrophoneLevelMonitor : IMicrophoneLevelMonitor
 {
     private WaveInEvent? waveIn;
 

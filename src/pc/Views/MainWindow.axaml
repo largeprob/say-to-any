@@ -14,7 +14,7 @@
         MinHeight="680"
         x:Class="pc.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/SayToAny_Logo.ico"
+        Icon="/Assets/logo.ico"
         Title=""
         WindowStartupLocation="CenterScreen"
         Background="#F8F9FB">
@@ -160,13 +160,21 @@
                 BorderThickness="0">
             <Grid RowDefinitions="Auto,*,Auto" Margin="10,22,10,14">
                 <StackPanel>
-                    <Grid ColumnDefinitions="*,Auto" Margin="8,0,4,18">
-                        <TextBlock Text="Q  Say To Any"
-                                   FontSize="18"
+                    <Grid ColumnDefinitions="Auto,*,Auto" Margin="4,0,4,20">
+                        <Image Source="/Assets/logo.png"
+                               Width="38"
+                               Height="38"
+                               Stretch="Uniform"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="Say To Any"
+                                   FontSize="17"
                                    FontWeight="SemiBold"
                                    Foreground="#0E2246"
-                                   VerticalAlignment="Center"/>
-                        <Border Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <Border Grid.Column="2"
                                 Background="#E9F2FF"
                                 CornerRadius="14"
                                 Padding="12,4"
@@ -353,25 +361,9 @@
                 CornerRadius="18,18,0,0"
                 ClipToBounds="True"
                 Margin="0">
-            <Grid RowDefinitions="Auto,*"
-                  Margin="26,20,26,0">
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Spacing="10"
-                            Margin="0,0,0,18">
-                    <Image Source="/Assets/SayToAnyLogo.png"
-                           Width="38"
-                           Height="28"
-                           Stretch="Uniform"/>
-                    <TextBlock Text="Say To Any"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="#102A56"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
-
-                <ScrollViewer Grid.Row="1">
+            <Grid RowDefinitions="*"
+                  Margin="26,26,26,0">
+                <ScrollViewer>
                     <Grid>
                         <StackPanel IsVisible="{Binding IsHomeVisible}">
                      

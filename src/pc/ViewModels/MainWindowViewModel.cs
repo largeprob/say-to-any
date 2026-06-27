@@ -41,9 +41,10 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
 
     private readonly SettingsStore settingsStore = new();
     private readonly OpenAiCompatibleClient apiClient = new();
-    private readonly MicrophoneRecorder recorder = new();
-    private readonly TextInsertionService textInsertion = new();
-    private readonly GlobalHotkeyService hotkeyService = new();
+    private readonly IAudioRecorder recorder;
+    private readonly ITextInsertionService textInsertion;
+    private readonly IGlobalHotkeyService hotkeyService;
+    private readonly Func<IMicrophoneLevelMonitor> microphoneLevelMonitorFactory;
     private readonly CancellationTokenSource shutdown = new();
     private readonly DispatcherTimer waveformTimer = new()
     {
@@ -57,7 +58,7 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
     private ApplicationDataFile appData = new();
     private CancellationTokenSource? recordingTimeout;
     private CancellationTokenSource? promptTimeout;
-    private TextInsertionTarget? dictationInsertionTarget;
+    private ITextInsertionTarget? dictationInsertionTarget;
     private bool isUpdatingHistoryRetentionSelection;
     private double targetAudioLevel;
     private double displayedAudioLevel;
@@ -164,7 +165,17 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
     private int waveformFrame;
 
     public MainWindowViewModel()
+        : this(PlatformServices.Create())
     {
+    }
+
+    internal MainWindowViewModel(PlatformServiceSet platformServices)
+    {
+        recorder = platformServices.AudioRecorder;
+        textInsertion = platformServices.TextInsertion;
+        hotkeyService = platformServices.GlobalHotkey;
+        microphoneLevelMonitorFactory = platformServices.MicrophoneLevelMonitorFactory;
+
         appData = settingsStore.Load();
         Settings = appData.Settings;
         SelectHistoryRetentionOption(Settings.HistoryRetention);
@@ -350,7 +361,7 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
     {
         RefreshMicrophones();
         CloseMicrophoneDialog();
-        MicrophoneDialog = new MicrophoneDialogViewModel(this, CloseMicrophoneDialog);
+        MicrophoneDialog = new MicrophoneDialogViewModel(this, CloseMicrophoneDialog, microphoneLevelMonitorFactory);
     }
 
     [RelayCommand]
@@ -735,7 +746,7 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private async Task DeliverFinalTextAsync(string text, TextInsertionTarget? insertionTarget)
+    private async Task DeliverFinalTextAsync(string text, ITextInsertionTarget? insertionTarget)
     {
         StatusMessage = "插入文本中...";
 

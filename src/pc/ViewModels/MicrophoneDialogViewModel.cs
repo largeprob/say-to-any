@@ -10,7 +10,7 @@ public partial class MicrophoneDialogViewModel : ViewModelBase, IDisposable
 {
     private readonly MainWindowViewModel main;
     private readonly Action close;
-    private readonly MicrophoneLevelMonitor monitor = new();
+    private readonly IMicrophoneLevelMonitor monitor;
     private readonly DispatcherTimer meterTimer = new()
     {
         Interval = TimeSpan.FromMilliseconds(33)
@@ -22,10 +22,14 @@ public partial class MicrophoneDialogViewModel : ViewModelBase, IDisposable
     private int speechHoldTicks;
     private bool disposed;
 
-    public MicrophoneDialogViewModel(MainWindowViewModel main, Action close)
+    public MicrophoneDialogViewModel(
+        MainWindowViewModel main,
+        Action close,
+        Func<IMicrophoneLevelMonitor> monitorFactory)
     {
         this.main = main;
         this.close = close;
+        monitor = monitorFactory();
 
         IEnumerable<AudioDeviceInfo> devices = main.Microphones.Count == 0
             ? [AudioDeviceInfo.Automatic]

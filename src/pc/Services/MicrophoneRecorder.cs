@@ -4,7 +4,7 @@ using pc.Models;
 
 namespace pc.Services;
 
-public sealed class MicrophoneRecorder : IDisposable
+public sealed class WindowsMicrophoneRecorder : IAudioRecorder
 {
     private WaveInEvent? waveIn;
     private WaveFileWriter? writer;
@@ -71,7 +71,7 @@ public sealed class MicrophoneRecorder : IDisposable
             throw new InvalidOperationException("Recording is already in progress.");
         }
 
-        currentFilePath = CreateRecordingFilePath();
+        currentFilePath = RecordingFilePaths.CreateRecordingFilePath();
 
         waveIn = new WaveInEvent
         {
@@ -141,53 +141,6 @@ public sealed class MicrophoneRecorder : IDisposable
         writer = null;
         stopCompletion = null;
         AudioLevelChanged?.Invoke(0);
-    }
-
-    private static string CreateRecordingFilePath()
-    {
-        var fileName = $"dictation-{DateTimeOffset.Now:yyyyMMdd-HHmmss-fff}.wav";
-
-        foreach (var folder in GetRecordingFolders())
-        {
-            if (TryPrepareWritableFolder(folder))
-            {
-                return Path.Combine(folder, fileName);
-            }
-        }
-
-        throw new InvalidOperationException("Cannot create a writable recordings folder.");
-    }
-
-    private static IEnumerable<string> GetRecordingFolders()
-    {
-        yield return Path.Combine(AppContext.BaseDirectory, "recordings");
-        yield return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "SayToAny",
-            "recordings");
-    }
-
-    private static bool TryPrepareWritableFolder(string folder)
-    {
-        try
-        {
-            Directory.CreateDirectory(folder);
-            var probe = Path.Combine(folder, $".write-test-{Guid.NewGuid():N}.tmp");
-            using (File.Create(probe))
-            {
-            }
-
-            File.Delete(probe);
-            return true;
-        }
-        catch (IOException)
-        {
-            return false;
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return false;
-        }
     }
 
     private static int ResolveDeviceNumber(int deviceNumber)

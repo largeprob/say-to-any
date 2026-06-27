@@ -3,9 +3,9 @@ using System.Text;
 
 namespace pc.Services;
 
-public readonly record struct TextInsertionTarget(IntPtr ForegroundWindow, IntPtr FocusWindow);
+public readonly record struct WindowsTextInsertionTarget(IntPtr ForegroundWindow, IntPtr FocusWindow) : ITextInsertionTarget;
 
-public sealed class TextInsertionService
+public sealed class WindowsTextInsertionService : ITextInsertionService
 {
     public async Task CopyTextAsync(string text)
     {
@@ -30,18 +30,22 @@ public sealed class TextInsertionService
         }
 
         var target = CaptureCurrentTarget();
-        if (target is not null && await Task.Run(() => TrySendTextToTarget(text, target.Value)))
+        if (target is WindowsTextInsertionTarget windowsTarget &&
+            await Task.Run(() => TrySendTextToTarget(text, windowsTarget)))
         {
             return;
         }
 
-        if (!await PasteViaClipboardAsync(text, target))
+        var clipboardTarget = target is WindowsTextInsertionTarget capturedTarget
+            ? capturedTarget
+            : (WindowsTextInsertionTarget?)null;
+        if (!await PasteViaClipboardAsync(text, clipboardTarget))
         {
             throw new InvalidOperationException("Cannot send text to the current focus.");
         }
     }
 
-    public TextInsertionTarget? CaptureCurrentTarget()
+    public ITextInsertionTarget? CaptureCurrentTarget()
     {
         if (!OperatingSystem.IsWindows())
         {
@@ -52,37 +56,41 @@ public sealed class TextInsertionService
         return CreateTarget(foregroundWindow);
     }
 
-    public async Task<bool> TryPasteTextToCurrentFocusAsync(string text, TextInsertionTarget? preferredTarget = null)
+    public async Task<bool> TryPasteTextToCurrentFocusAsync(string text, ITextInsertionTarget? preferredTarget = null)
     {
         if (!OperatingSystem.IsWindows() || string.IsNullOrEmpty(text))
         {
             return false;
         }
 
-        if (preferredTarget is not null &&
-            await Task.Run(() => TrySendTextToTarget(text, preferredTarget.Value)))
+        if (preferredTarget is WindowsTextInsertionTarget preferredWindowsTarget &&
+            await Task.Run(() => TrySendTextToTarget(text, preferredWindowsTarget)))
         {
             return true;
         }
 
         var currentTarget = CaptureCurrentTarget();
-        if (currentTarget is not null &&
-            currentTarget != preferredTarget &&
-            await Task.Run(() => TrySendTextToTarget(text, currentTarget.Value)))
+        if (currentTarget is WindowsTextInsertionTarget currentWindowsTarget &&
+            !Equals(currentTarget, preferredTarget) &&
+            await Task.Run(() => TrySendTextToTarget(text, currentWindowsTarget)))
         {
             return true;
         }
 
-        var clipboardTarget = preferredTarget ?? currentTarget;
+        WindowsTextInsertionTarget? clipboardTarget = preferredTarget is WindowsTextInsertionTarget preferredClipboardTarget
+            ? preferredClipboardTarget
+            : currentTarget is WindowsTextInsertionTarget currentClipboardTarget
+                ? currentClipboardTarget
+                : null;
         if (clipboardTarget is null)
         {
             return false;
         }
 
-        return await PasteViaClipboardAsync(text, clipboardTarget);
+        return await PasteViaClipboardAsync(text, clipboardTarget.Value);
     }
 
-    private static async Task<bool> PasteViaClipboardAsync(string text, TextInsertionTarget? target)
+    private static async Task<bool> PasteViaClipboardAsync(string text, WindowsTextInsertionTarget? target)
     {
         var previousText = await Task.Run(GetClipboardText);
 
@@ -217,7 +225,7 @@ public sealed class TextInsertionService
         return false;
     }
 
-    private static bool TrySendTextToTarget(string text, TextInsertionTarget target)
+    private static bool TrySendTextToTarget(string text, WindowsTextInsertionTarget target)
     {
         if (!TryResolveFocusWindow(target, out _))
         {
@@ -228,7 +236,7 @@ public sealed class TextInsertionService
         return SendUnicodeText(text);
     }
 
-    private static TextInsertionTarget? CreateTarget(IntPtr foregroundWindow)
+    private static WindowsTextInsertionTarget? CreateTarget(IntPtr foregroundWindow)
     {
         if (foregroundWindow == IntPtr.Zero || !IsWindow(foregroundWindow))
         {
@@ -242,10 +250,10 @@ public sealed class TextInsertionService
         }
 
         var focusWindow = GetFocusWindow(threadId);
-        return new TextInsertionTarget(foregroundWindow, focusWindow);
+        return new WindowsTextInsertionTarget(foregroundWindow, focusWindow);
     }
 
-    private static bool TryResolveFocusWindow(TextInsertionTarget target, out IntPtr focusWindow)
+    private static bool TryResolveFocusWindow(WindowsTextInsertionTarget target, out IntPtr focusWindow)
     {
         focusWindow = target.FocusWindow;
         if (focusWindow != IntPtr.Zero && IsWindow(focusWindow))
@@ -286,7 +294,7 @@ public sealed class TextInsertionService
             : IntPtr.Zero;
     }
 
-    private static void ActivateTarget(TextInsertionTarget target)
+    private static void ActivateTarget(WindowsTextInsertionTarget target)
     {
         if (target.ForegroundWindow == IntPtr.Zero || !IsWindow(target.ForegroundWindow))
         {
