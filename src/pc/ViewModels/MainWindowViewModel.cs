@@ -32,6 +32,10 @@ public sealed class HistoryRetentionOption
 
 public partial class MainWindowViewModel : ViewModelBase, IDisposable
 {
+    private const int ProcessingDotsBlinkFrames = 14;
+    private const double ProcessingShimmerStep = 0.018;
+    private const double ProcessingShimmerBandWidth = 0.18;
+
     private static readonly IBrush ActiveNavigationForeground = new SolidColorBrush(Color.FromRgb(0x12, 0x6D, 0xFF));
     private static readonly IBrush InactiveNavigationForeground = new SolidColorBrush(Color.FromRgb(0x52, 0x66, 0x81));
 
@@ -59,6 +63,7 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
     private double displayedAudioLevel;
     private double dictationProcessingProgressTarget;
     private int speechHoldTicks;
+    private int dictationProcessingAnimationFrame;
 
     [ObservableProperty]
     private AppSettings settings = new();
@@ -112,6 +117,15 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DictationProcessingProgressScale))]
     private double dictationProcessingProgress;
+
+    [ObservableProperty]
+    private double dictationProcessingDotsOpacity = 1;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DictationProcessingShimmerTailOffset))]
+    [NotifyPropertyChangedFor(nameof(DictationProcessingShimmerPeakOffset))]
+    [NotifyPropertyChangedFor(nameof(DictationProcessingShimmerLeadOffset))]
+    private double dictationProcessingShimmerPosition;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SelectedMicrophoneDisplayName))]
@@ -206,6 +220,12 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
     public bool IsDictationControlVisible => IsRecording || IsDictationProcessing;
 
     public double DictationProcessingProgressScale => Math.Clamp(DictationProcessingProgress / 100d, 0, 1);
+
+    public double DictationProcessingShimmerTailOffset => GetDictationProcessingShimmerOffset(-ProcessingShimmerBandWidth);
+
+    public double DictationProcessingShimmerPeakOffset => GetDictationProcessingShimmerOffset(0);
+
+    public double DictationProcessingShimmerLeadOffset => GetDictationProcessingShimmerOffset(ProcessingShimmerBandWidth);
 
     public string SelectedMicrophoneDisplayName => SelectedMicrophone?.DisplayName ?? "未发现麦克风";
 
@@ -1047,6 +1067,11 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
             : text.Count(character => !char.IsWhiteSpace(character));
     }
 
+    private double GetDictationProcessingShimmerOffset(double offset)
+    {
+        return Math.Clamp(DictationProcessingShimmerPosition + offset, 0, 1);
+    }
+
     private IBrush GetNavigationForeground(MainSection section)
     {
         return SelectedSection == section
@@ -1077,6 +1102,7 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
     {
         DictationProcessingProgress = 4;
         dictationProcessingProgressTarget = 18;
+        ResetDictationProcessingLabelAnimation();
         IsDictationProcessing = true;
 
         if (!dictationProcessingTimer.IsEnabled)
@@ -1115,6 +1141,7 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
         dictationProcessingTimer.Stop();
         dictationProcessingProgressTarget = 0;
         DictationProcessingProgress = 0;
+        ResetDictationProcessingLabelAnimation();
         IsDictationProcessing = false;
     }
 
@@ -1133,13 +1160,33 @@ public partial class MainWindowViewModel : ViewModelBase, IDisposable
         }
 
         var delta = dictationProcessingProgressTarget - DictationProcessingProgress;
-        if (delta <= 0)
+        if (delta > 0)
         {
-            return;
+            var step = Math.Max(0.24, delta * 0.06);
+            DictationProcessingProgress = Math.Min(dictationProcessingProgressTarget, DictationProcessingProgress + step);
         }
 
-        var step = Math.Max(0.24, delta * 0.06);
-        DictationProcessingProgress = Math.Min(dictationProcessingProgressTarget, DictationProcessingProgress + step);
+        AnimateDictationProcessingLabel();
+    }
+
+    private void ResetDictationProcessingLabelAnimation()
+    {
+        dictationProcessingAnimationFrame = 0;
+        DictationProcessingDotsOpacity = 1;
+        DictationProcessingShimmerPosition = 0;
+    }
+
+    private void AnimateDictationProcessingLabel()
+    {
+        dictationProcessingAnimationFrame++;
+        DictationProcessingDotsOpacity = (dictationProcessingAnimationFrame / ProcessingDotsBlinkFrames) % 2 == 0
+            ? 1
+            : 0;
+
+        var nextShimmerPosition = DictationProcessingShimmerPosition + ProcessingShimmerStep;
+        DictationProcessingShimmerPosition = nextShimmerPosition >= 1
+            ? 0
+            : nextShimmerPosition;
     }
 
     private void AnimateWaveform()

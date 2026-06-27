@@ -95,10 +95,19 @@
         <Style Selector="TextBlock.processing-label">
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#F8FBFF"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Opacity" Value="0.92"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Opacity" Value="0.96"/>
+        </Style>
+
+        <Style Selector="TextBlock.processing-dots">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.18"/>
+                </Transitions>
+            </Setter>
         </Style>
 
         <Style Selector="Border.result-panel">
@@ -201,9 +210,37 @@
                         </Border>
                     </Border>
 
-                    <TextBlock Classes="processing-label"
-                               Text="think"
-                               IsVisible="{Binding IsDictationProcessing}"/>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                IsVisible="{Binding IsDictationProcessing}">
+                        <TextBlock Classes="processing-label"
+                                   Text="think">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                                    <GradientStop Color="#DDF0F7FF" Offset="0"/>
+                                    <GradientStop Color="#DDF0F7FF" Offset="{Binding DictationProcessingShimmerTailOffset}"/>
+                                    <GradientStop Color="#FFFFFF" Offset="{Binding DictationProcessingShimmerPeakOffset}"/>
+                                    <GradientStop Color="#DDF0F7FF" Offset="{Binding DictationProcessingShimmerLeadOffset}"/>
+                                    <GradientStop Color="#DDF0F7FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+
+                        <TextBlock Classes="processing-label processing-dots"
+                                   Text="..."
+                                   Opacity="{Binding DictationProcessingDotsOpacity}">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                                    <GradientStop Color="#DDF0F7FF" Offset="0"/>
+                                    <GradientStop Color="#DDF0F7FF" Offset="{Binding DictationProcessingShimmerTailOffset}"/>
+                                    <GradientStop Color="#FFFFFF" Offset="{Binding DictationProcessingShimmerPeakOffset}"/>
+                                    <GradientStop Color="#DDF0F7FF" Offset="{Binding DictationProcessingShimmerLeadOffset}"/>
+                                    <GradientStop Color="#DDF0F7FF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </StackPanel>
 
                     <Border Padding="6,4"
                             IsVisible="{Binding IsRecording}">
