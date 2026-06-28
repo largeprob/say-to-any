@@ -9,6 +9,14 @@ src/SukiUI-main
 .claude/
 docker-output/
 
+# Local configuration and generated runtime data
+src/server/**/Properties/launchSettings.json
+src/server/**/appsettings.Development.json
+src/server/**/appsettings.Local.json
+src/server/**/App_Data/
+src/tauriRust/src-tauri/target/
+src/tauriRust/.react-router/
+
 #包缓存
 NuGetPackages/
 

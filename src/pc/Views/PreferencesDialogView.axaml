@@ -16,14 +16,64 @@
              Background="Transparent">
 
     <UserControl.Styles>
+        <Style Selector="Button.preferences-close-button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.preferences-close-button /template/ Border#RootBorder">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.preferences-close-button:pointerover">
+            <Setter Property="Background" Value="#EAF3FF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.preferences-close-button:pointerover /template/ Border#RootBorder">
+            <Setter Property="Background" Value="#EAF3FF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.preferences-nav-button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.preferences-nav-button /template/ Border#RootBorder">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
         <Style Selector="Button.preferences-nav-button:pointerover">
             <Setter Property="Background" Value="#EAF3FF"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
         </Style>
 
         <Style Selector="Button.preferences-nav-button:pointerover /template/ Border#RootBorder">
             <Setter Property="Background" Value="#EAF3FF"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.preferences-nav-button:pressed">
+            <Setter Property="Background" Value="#DDEBFF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+
+        <Style Selector="Button.preferences-nav-button:pressed /template/ Border#RootBorder">
+            <Setter Property="Background" Value="#DDEBFF"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
         </Style>
     </UserControl.Styles>
 
@@ -35,7 +85,8 @@
             Margin="12">
         <Grid RowDefinitions="48,*">
             <Grid Background="#F8FBFF">
-                <Button Command="{Binding CloseDialogCommand}"
+                <Button Classes="preferences-close-button"
+                        Command="{Binding CloseDialogCommand}"
                         Width="34"
                         Height="34"
                         Padding="0"

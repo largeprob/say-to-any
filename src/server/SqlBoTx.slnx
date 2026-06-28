@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/aspire/">
+    <Project Path="SqlBoTx.Net.AppHost/SqlBoTx.Net.AppHost.csproj" Id="13619548-9bc8-4cd6-8506-18fab0623963" />
+    <Project Path="SqlBoTx.Net.ServiceDefaults/SqlBoTx.Net.ServiceDefaults.csproj" />
+  </Folder>
+  <Project Path="SqlBoTx.Net.ApiService/SqlBoTx.Net.ApiService.csproj" />
+  <Project Path="SqlBoTx.Net.Application.Contracts/SqlBoTx.Net.Application.Contracts.csproj" Id="46bf7a4a-c746-4df0-8392-d3ca7df01fd9" />
+  <Project Path="SqlBoTx.Net.Application/SqlBoTx.Net.Application.csproj" Id="2066ce18-3749-4732-8d3f-36b04d7191cb" />
+  <Project Path="SqlBoTx.Net.Core/SqlBoTx.Net.Core.csproj" Id="99c4d234-d8ac-449c-b47d-ed1f7153b531" />
+  <Project Path="SqlBoTx.Net.DbManager/SqlBoTx.Net.DbManager.csproj" Id="1f30d602-15e0-4c6a-8e7b-feb2edd4c823" />
+  <Project Path="SqlBoTx.Net.Domain.Share/SqlBoTx.Net.Domain.Share.csproj" Id="309153c7-2d5a-46fc-a2f1-6198cf075848" />
+  <Project Path="SqlBoTx.Net.Domain/SqlBoTx.Net.Domain.csproj" Id="52bf6a17-cf6d-485f-8984-515ab295de5d" />
+  <Project Path="SqlBoTx.Net.EFCore/SqlBoTx.Net.EFCore.csproj" Id="cf89cf66-2e4b-4c85-a254-53bfda7d9049" />
+  <Project Path="SqlBoTx.Net.Share/SqlBoTx.Net.Share.csproj" Id="5e9e698c-8ed6-49e5-9bd5-67e87ea9c797" />
+</Solution>

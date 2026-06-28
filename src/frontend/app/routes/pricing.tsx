@@ -39,7 +39,7 @@ function PricingHero() {
         <div className="mt-10 flex flex-wrap items-center gap-5">
           <a
             id="download"
-            href="#"
+            href="/download"
             className="inline-flex h-[52px] items-center justify-center rounded-[14px] bg-[#06080d] px-8 text-base font-semibold text-white shadow-[0_16px_36px_rgba(6,8,13,0.18)] transition hover:-translate-y-0.5"
           >
             免费下载

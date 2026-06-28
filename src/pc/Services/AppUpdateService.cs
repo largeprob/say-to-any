@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Velopack;
 using Velopack.Sources;
 
@@ -10,6 +11,7 @@ public static class AppUpdateService
     private const string GithubTokenEnvironmentVariable = "SAY_TO_ANY_UPDATE_GITHUB_TOKEN";
     private const string IncludePrereleasesEnvironmentVariable = "SAY_TO_ANY_UPDATE_PRERELEASE";
     private const string AutoRestartEnvironmentVariable = "SAY_TO_ANY_UPDATE_AUTO_RESTART";
+    private const string DiagnosticsEnvironmentVariable = "SAY_TO_ANY_UPDATE_DIAGNOSTICS";
 
     public static void CheckForUpdatesOnStartup(Action<string> reportStatus, CancellationToken cancellationToken)
     {
@@ -40,8 +42,12 @@ public static class AppUpdateService
 
             if (!updateManager.IsInstalled)
             {
+                ReportDiagnostic(reportStatus, "自动更新未启用：当前应用不是通过 Velopack 安装包或便携包启动的。");
                 return;
             }
+
+            Trace.TraceInformation(
+                $"Checking for updates from {repositoryUrl} with current version {updateManager.CurrentVersion}.");
 
             var pendingUpdate = updateManager.UpdatePendingRestart;
             if (pendingUpdate is not null)
@@ -75,9 +81,10 @@ public static class AppUpdateService
         {
             // Normal shutdown path.
         }
-        catch
+        catch (Exception ex)
         {
             // Update failures should never prevent dictation from starting.
+            ReportDiagnostic(reportStatus, CreateFailureDiagnostic(ex));
         }
     }
 
@@ -99,6 +106,25 @@ public static class AppUpdateService
     private static bool ShouldRestartAfterDownload()
     {
         return GetBooleanSetting(AutoRestartEnvironmentVariable, defaultValue: true);
+    }
+
+    private static string CreateFailureDiagnostic(Exception exception)
+    {
+        return exception.Message.Contains("matching assets", StringComparison.OrdinalIgnoreCase) ||
+            exception.Message.Contains("RELEASES", StringComparison.OrdinalIgnoreCase) ||
+            exception.Message.Contains("releases.", StringComparison.OrdinalIgnoreCase)
+            ? "更新检查失败：GitHub Release 缺少 Velopack 更新清单或更新包。"
+            : $"更新检查失败：{exception.Message}";
+    }
+
+    private static void ReportDiagnostic(Action<string> reportStatus, string message)
+    {
+        Trace.TraceWarning(message);
+
+        if (GetBooleanSetting(DiagnosticsEnvironmentVariable))
+        {
+            reportStatus(message);
+        }
     }
 
     private static string GetSetting(string name, string defaultValue = "")

@@ -15,7 +15,7 @@ export function SiteHeader() {
 
         <div className="flex shrink-0 items-center gap-4">
           <a
-            href="/pricing#download"
+            href="/download"
             className="inline-flex h-11 items-center rounded-[13px] bg-[#06080d] px-4 text-[15px] font-semibold text-white shadow-[0_14px_34px_rgba(6,8,13,0.16)] transition hover:-translate-y-0.5 md:px-5"
           >
             下载<span className="hidden md:inline">&nbsp;Say-To-Any</span>

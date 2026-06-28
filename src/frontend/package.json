@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
+    "build:ssg": "react-router build",
     "dev": "react-router dev --port 6002",
+    "preview:ssg": "vite preview --host 0.0.0.0 --port 6002 --outDir build/client",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },

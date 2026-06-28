@@ -1,0 +1,32 @@
+[package]
+name = "say-to-any-tauri"
+version = "0.1.0"
+description = "Say To Any desktop app built with Tauri, React, Tailwind CSS, and HeroUI."
+authors = ["Say To Any"]
+edition = "2021"
+
+[lib]
+name = "say_to_any_tauri_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "say-to-any-tauri"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+arboard = "3"
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+cpal = "0.16"
+directories = "6"
+hound = "3"
+reqwest = { version = "0.12", features = ["json", "multipart", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = [] }
+thiserror = "2"
+tokio = { version = "1", features = ["sync", "time"] }
+uuid = { version = "1", features = ["v4"] }

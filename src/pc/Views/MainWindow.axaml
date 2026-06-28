@@ -31,14 +31,64 @@
                 <Setter Property="Padding" Value="8,5"/>
             </Style>
 
+            <Style Selector="Button.main-nav-button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style Selector="Button.main-nav-button /template/ Border#RootBorder">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
             <Style Selector="Button.main-nav-button:pointerover">
                 <Setter Property="Background" Value="#EAF3FF"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
             </Style>
 
             <Style Selector="Button.main-nav-button:pointerover /template/ Border#RootBorder">
                 <Setter Property="Background" Value="#EAF3FF"/>
                 <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style Selector="Button.main-nav-button:pressed">
+                <Setter Property="Background" Value="#DDEBFF"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style Selector="Button.main-nav-button:pressed /template/ Border#RootBorder">
+                <Setter Property="Background" Value="#DDEBFF"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style Selector="Button.sidebar-icon-button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style Selector="Button.sidebar-icon-button /template/ Border#RootBorder">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style Selector="Button.sidebar-icon-button:pointerover">
+                <Setter Property="Background" Value="#EAF3FF"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+
+            <Style Selector="Button.sidebar-icon-button:pointerover /template/ Border#RootBorder">
+                <Setter Property="Background" Value="#EAF3FF"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
             </Style>
 
             <Style Selector="TextBox.home-transcript-input">
@@ -191,13 +241,29 @@
                                     CornerRadius="12"
                                     IsVisible="{Binding IsHomeVisible}"/>
                             <Button Classes="Flat Rounded main-nav-button"
-                                    Content="⌂  首页"
                                     Command="{Binding ShowHomeCommand}"
                                     HorizontalContentAlignment="Left"
                                     Padding="11,0"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Foreground="{Binding HomeNavigationForeground}"/>
+                                    Foreground="{Binding HomeNavigationForeground}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="10"
+                                            VerticalAlignment="Center">
+                                    <Viewbox Width="16"
+                                             Height="16"
+                                             Stretch="Uniform">
+                                        <Canvas Width="24"
+                                                Height="24">
+                                            <Path Data="{StaticResource HomeIconGeometry}"
+                                                  Fill="{Binding HomeNavigationForeground}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="首页"
+                                               VerticalAlignment="Center"
+                                               Foreground="{Binding HomeNavigationForeground}"/>
+                                </StackPanel>
+                            </Button>
                         </Grid>
 
                         <Grid Height="36">
@@ -205,13 +271,29 @@
                                     CornerRadius="12"
                                     IsVisible="{Binding IsHistoryVisible}"/>
                             <Button Classes="Flat Rounded main-nav-button"
-                                    Content="◷  历史记录"
                                     Command="{Binding ShowHistoryCommand}"
                                     HorizontalContentAlignment="Left"
                                     Padding="11,0"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Foreground="{Binding HistoryNavigationForeground}"/>
+                                    Foreground="{Binding HistoryNavigationForeground}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="10"
+                                            VerticalAlignment="Center">
+                                    <Viewbox Width="16"
+                                             Height="16"
+                                             Stretch="Uniform">
+                                        <Canvas Width="24"
+                                                Height="24">
+                                            <Path Data="{StaticResource HistoryIconGeometry}"
+                                                  Fill="{Binding HistoryNavigationForeground}"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="历史记录"
+                                               VerticalAlignment="Center"
+                                               Foreground="{Binding HistoryNavigationForeground}"/>
+                                </StackPanel>
+                            </Button>
                         </Grid>
                     </StackPanel>
                 </StackPanel>
@@ -315,7 +397,8 @@
                     <Border Height="1" Background="#E3ECFA"/>
 
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
-                        <Button Width="32"
+                        <Button Classes="sidebar-icon-button"
+                                Width="32"
                                 Height="32"
                                 Padding="0"
                                 Click="OpenAccountDialog"
@@ -332,7 +415,8 @@
                             </Viewbox>
                         </Button>
                       
-                        <Button Grid.Column="3"
+                        <Button Classes="sidebar-icon-button"
+                                Grid.Column="3"
                                 Width="32"
                                 Height="32"
                                 Padding="0"

@@ -62,6 +62,15 @@ pnpm build
 .\scripts\package-pc.ps1 -Version 0.1.1
 ```
 
+发布 Windows 自动更新包：
+
+```powershell
+$env:GITHUB_TOKEN = "<token>"
+.\scripts\package-pc.ps1 -Version 0.1.2 -Upload -PublishRelease
+```
+
+Velopack 自动更新需要把脚本生成的 `RELEASES`、`releases.win.json`、`assets.win.json`、`.nupkg` 和安装包一起发布到 GitHub Release。只上传手工压缩的 `.zip` 可以用于手动下载，但不会被 `UpdateManager` 识别为可更新版本。
+
 ## 项目结构
 
 ```text
